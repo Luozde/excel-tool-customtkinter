@@ -36,3 +36,7 @@ pyinstaller --noconfirm --onedir --windowed --add-data "C:\Users\Administrator\A
 ```
 
 ## 4. 打包后的exe文件在dist目录下
+
+> 参考资料：
+> [customtkinter官方打包说明](https://customtkinter.tomschimansky.com/documentation/packaging)
+> [customtkinter Documentation](https://customtkinter.tomschimansky.com/documentation/)
