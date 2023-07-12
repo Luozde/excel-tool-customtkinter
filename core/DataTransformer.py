@@ -23,7 +23,7 @@ class DataTransformer:
             quantity_index = headers.index('产品数量')
             image_index = headers.index('图片')
             order_no_index = headers.index('订单号')
-        except ValueError as e:
+        except Exception as e:
             app.print_logs("订单文件校验:\n", "end")
             app.print_logs("可能未找到【SKU】,【产品数量】,【图片】或【订单号】列，具体请看《异常信息》\n", "end")
             app.print_logs("异常信息：" + str({e}) + "\n", "end")
@@ -34,7 +34,7 @@ class DataTransformer:
                 skuStr = row[sku_index]
                 try:
                     quantity = int(row[quantity_index])
-                except ValueError:
+                except Exception:
                     app.print_logs(f"第{row_index + 1}行-订单号【{row[order_no_index]}】: 产品数量不规范，未被统计入内，请人工核对\n","end")
                     continue
                 image = row[image_index]
@@ -49,7 +49,7 @@ class DataTransformer:
                         skuItem.imageFile = image
                         break
                 skuItemList.append(skuItem)
-            except (ValueError, IndexError):
+            except (Exception):
                 app.print_logs(f"第{row_index+1}行-订单号【{row[order_no_index]}】: SKU【{row[sku_index]}】不规范，未被统计入内，请人工核对\n", "end")
                 continue
 
