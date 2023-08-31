@@ -4,6 +4,14 @@
 
 主要功能：将excel文件中的原始订单信息进行统计，并转化成订单-颜色-尺码维度的数量统计报表文件
 
+## 项目结构
+```bash
+├─ExcelTools.py
+├─ExcelTools.spec
+├─README.md
+├─ui
+├─core
+
 ## 项目信息
 语言及版本： python3， 建议使用python3.11
 使用的库： customtkinter, openpyxl, pyinstaller
