@@ -5,10 +5,12 @@ class Product:
         self.details = details
 
 class Detail:
-    def __init__(self, image, imageFile, color, s, m, l, l1, l2, l3, l4, l5):
+    def __init__(self, image, imageFile, color, sex, text, s, m, l, l1, l2, l3, l4,l5):
         self.image = image
         self.imageFile = imageFile
         self.color = color
+        self.sex = sex
+        self.text = text
         self.s = s
         self.m = m
         self.l = l

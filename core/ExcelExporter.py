@@ -14,7 +14,7 @@ class ExcelExporter:
         wb = openpyxl.Workbook()
         ws = wb.active
         # 设置表头
-        headers = ['No', '商品号', '图像', '颜色', 'S', 'M', 'L', 'XL', '2XL', '3XL', '合计']
+        headers = ['No', '商品号', '图像', '文本', '颜色', 'S', 'M', 'L', 'XL', '2XL', '3XL', '合计']
         header_font = Font(bold=True, size=14)
         header_alignment = Alignment(horizontal='center', vertical='center')
         for col_num, header in enumerate(headers, 1):
@@ -52,16 +52,17 @@ class ExcelExporter:
 
             for detail in details:
                 # ws.cell(row=row_index, column=3, value=detail.image).font = data_font
-                ws.cell(row=row_index, column=4, value=detail.color).font = data_font
-                ws.cell(row=row_index, column=5, value=detail.s).font = data_font
-                ws.cell(row=row_index, column=6, value=detail.m).font = data_font
-                ws.cell(row=row_index, column=7, value=detail.l).font = data_font
-                ws.cell(row=row_index, column=8, value=detail.l1).font = data_font
-                ws.cell(row=row_index, column=9, value=detail.l2).font = data_font
-                ws.cell(row=row_index, column=10, value=detail.l3).font = data_font
+                ws.cell(row=row_index, column=4, value=detail.text).font = data_font
+                ws.cell(row=row_index, column=5, value=detail.color).font = data_font
+                ws.cell(row=row_index, column=6, value=detail.s).font = data_font
+                ws.cell(row=row_index, column=7, value=detail.m).font = data_font
+                ws.cell(row=row_index, column=8, value=detail.l).font = data_font
+                ws.cell(row=row_index, column=9, value=detail.l1).font = data_font
+                ws.cell(row=row_index, column=10, value=detail.l2).font = data_font
+                ws.cell(row=row_index, column=11, value=detail.l3).font = data_font
                 # 计算合计值
-                total_formula = f"=SUM(E{row_index}:J{row_index})"
-                ws.cell(row=row_index, column=11, value=total_formula).font = data_font
+                total_formula = f"=SUM(F{row_index}:K{row_index})"
+                ws.cell(row=row_index, column=12, value=total_formula).font = data_font
 
                 img = detail.imageFile
                 # if img is not None:
@@ -74,26 +75,29 @@ class ExcelExporter:
                 row_index += 1
 
         # 设置列宽
-        column_widths = [10, 20, 20, 20, 10, 10, 10, 10, 10, 10, 10]
+        column_widths = [10, 20, 20, 20, 20, 10, 10, 10, 10, 10, 10, 10]
         for col_num, width in enumerate(column_widths, 1):
             col_letter = get_column_letter(col_num)
             ws.column_dimensions[col_letter].width = width
 
         # 设置行高
         ws.row_dimensions[1].height = 30
-        for row in ws.iter_rows(min_row=2, min_col=1, max_row=row_index - 1, max_col=11):
+        for row in ws.iter_rows(min_row=2, min_col=1, max_row=row_index - 1, max_col=12):
             for cell in row:
                 cell.alignment = data_alignment
                 cell.font = data_font
+                size_start = 6
+                total_index = size_start + 6
                 try:
-                    if cell.column > 4 and cell.column < 11 and cell.value is not None and int(cell.value) > 0:
+                    if cell.column >= size_start and cell.column < total_index and cell.value is not None and int(cell.value) > 0:
                         cell.font = data_font_bold
-                    if cell.column == 11:
+                    if cell.column == total_index:
                         cell.font = Font(size=16, bold=True)
                 except:
                     print(cell.value)
-                cell.alignment = Alignment(horizontal='center', vertical='center')
+                cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
                 ws.row_dimensions[cell.row].height = 80
+
         ws.freeze_panes = 'A2'
         wb.save(file_path)
 

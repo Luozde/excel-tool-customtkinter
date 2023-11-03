@@ -1,12 +1,23 @@
 
 class Sku:
-    def __init__(self, color, size, productNo, quantity=0, image=None, imageFile=None):
+    def __init__(self, color, size, productNo, quantity=0, image=None, imageFile=None, text=None, sex=None):
         self.color = color
         self.size = size.upper()
         self.productNo = productNo
         self.quantity = 0
         self.image = None
         self.imageFile = None
+        self.text = text
+        self.sex = sex
+        if self.size == 'XXL':
+            self.size = '2XL'
+        elif self.size == 'XXXL':
+            self.size = '3XL'
+        elif self.size == 'XXXXL':
+            self.size = '4XL'
+        elif self.size == 'XXXXXL':
+            self.size = '5XL'
+
         if self.size != 'S' and self.size != 'M' and self.size != 'L' \
                 and self.size != 'XL' and self.size != '2XL' \
                 and self.size != '3XL' and self.size != '4XL' \
@@ -28,6 +39,12 @@ class Sku:
                 color = parts[1]
                 size = parts[2]
                 return Sku(color, size, productNo)
+            elif num_parts == 4 and ("Men's" in parts[2] or "Women's" in parts[2]):
+                productNo = parts[0]
+                size = parts[2].split(" ")[1]
+                sex = parts[2].split(" ")[0]
+                color = f'{parts[1]}({sex})'
+                return Sku(color=color.replace("'s", ""), size=size, productNo=productNo, text=parts[3], sex=sex)
             else:
                 raise ValueError("sku格式不规范")
 

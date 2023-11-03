@@ -66,12 +66,15 @@ class DataTransformer:
         for skuItem in skuItemList:
             productNo = skuItem.productNo
             color = skuItem.color
+            text = skuItem.text
             size = skuItem.size
             quantity = skuItem.quantity
 
             product_dict[productNo][color]["image"] = skuItem.image
             product_dict[productNo][color]["imageFile"] = skuItem.imageFile
             product_dict[productNo][color][size] += quantity
+            product_dict[productNo][color]["text"] = text
+            product_dict[productNo][color]["sex"] = skuItem.sex
 
         productList = []
         for productNo, color_dict in product_dict.items():
@@ -81,6 +84,8 @@ class DataTransformer:
                     image=size_dict["image"],
                     imageFile=size_dict["imageFile"],
                     color=color,
+                    text=size_dict["text"],
+                    sex=size_dict["sex"],
                     s=size_dict["S"],
                     m=size_dict["M"],
                     l=size_dict["L"],
@@ -91,6 +96,9 @@ class DataTransformer:
                     l5=size_dict["5XL"]
                 )
                 details.append(detail)
+
+            # 对details进行排序
+            details.sort(key=lambda x: x.color)
 
             product = Product(productNo, details)
             productList.append(product)
