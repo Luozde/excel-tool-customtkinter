@@ -43,10 +43,10 @@ class App(customtkinter.CTk):
 
         # 设置导出文件夹
         row_index += 1
-        self.export_dir_label = customtkinter.CTkLabel(self, text="导出目录: ")
+        self.export_dir_label = customtkinter.CTkLabel(self, text="输出目录: ")
         self.export_dir_label.grid(row=row_index, column=0, pady=(20, 0), padx=(20, 20), sticky="e")
 
-        self.export_path_label = customtkinter.CTkEntry(self, placeholder_text="请选择缴费表文件")
+        self.export_path_label = customtkinter.CTkEntry(self, placeholder_text="请选择输出目录")
         self.export_path_label.grid(row=row_index, column=1, columnspan=4, pady=(20, 0), sticky="nsew")
 
         self.export_dir_btn = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
