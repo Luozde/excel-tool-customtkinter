@@ -21,38 +21,66 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("订单配货表生成工具")
-        self.geometry(f"{650}x{500}")
-        self.grid_columnconfigure((0, 1), weight=1)
-        self.grid_rowconfigure((5, 5), weight=1)
+        self.title("订单配货表生成工具-V2023.11.03")
+        self.geometry(f"{600}x{500}")
+        self.grid_columnconfigure((1, 4), weight=1)
+        self.grid_rowconfigure((5, 6), weight=1)
+
+        row_index = 0
 
         # 选择订单文件
-        self.file_btn = customtkinter.CTkButton(self, text="选择订单文件", width=25, command=self.file_button_callback)
-        self.file_btn.grid(row=0, column=0, sticky="e", padx=20, pady=(20,0))
-        self.file_path_label = customtkinter.CTkLabel(self, text="请选择订单文件")
-        self.file_path_label.grid(row=0, column=1, columnspan=2, pady=(20, 0), sticky="w")
+        self.file_btn_label = customtkinter.CTkLabel(self, text="订单文件: ")
+        self.file_btn_label.grid(row=row_index, column=0, pady=(20, 0), padx=(20, 20), sticky="e")
+
+        self.file_path_label = customtkinter.CTkEntry(self, placeholder_text="请选择订单文件")
+        self.file_path_label.grid(row=row_index, column=1, columnspan=4, pady=(20, 0), sticky="nsew")
+
+        self.file_btn = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
+                                                      text_color=("gray10", "#DCE4EE"),
+                                                      text="选择文件", width=25,
+                                                      command=self.file_button_callback)
+        self.file_btn.grid(row=row_index, column=5, sticky="ew", padx=(20, 50), pady=(20, 0))
 
         # 设置导出文件夹
-        self.export_dir_btn = customtkinter.CTkButton(self, text="设置导出文件夹", width=25, command=self.export_dir_btn_callback)
-        self.export_dir_btn.grid(row=1, column=0, sticky="e", padx=20, pady=(20, 0))
-        self.export_path_label = customtkinter.CTkLabel(self, text="默认当前目录 \n" + self.export_dir)
-        self.export_path_label.grid(row=1, column=1, columnspan=2, pady=(20, 0), sticky="w")
+        row_index += 1
+        self.export_dir_label = customtkinter.CTkLabel(self, text="导出目录: ")
+        self.export_dir_label.grid(row=row_index, column=0, pady=(20, 0), padx=(20, 20), sticky="e")
+
+        self.export_path_label = customtkinter.CTkEntry(self, placeholder_text="请选择缴费表文件")
+        self.export_path_label.grid(row=row_index, column=1, columnspan=4, pady=(20, 0), sticky="nsew")
+
+        self.export_dir_btn = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
+                                                     text_color=("gray10", "#DCE4EE"),
+                                                     text="选择目录", width=25,
+                                                     command=self.export_dir_btn_callback)
+        self.export_dir_btn.grid(row=row_index, column=5, sticky="ew", padx=(20, 50), pady=(20, 0))
 
         # 设置导出文件名
-        self.export_dir_btn = customtkinter.CTkButton(self, text="设置导出文件名", width=25, state="disabled")
-        self.export_dir_btn.grid(row=2, column=0, sticky="e", padx=20, pady=(20, 0))
-        self.file_name_entry = customtkinter.CTkEntry(self, placeholder_text="默认：订单文件名-配货表-时间戳", width=300)
-        self.file_name_entry.grid(row=2, column=1, columnspan=2, pady=(20, 0), sticky="nsw")
+        row_index += 1
+        self.export_dir_label = customtkinter.CTkLabel(self, text="输出文件名: ")
+        self.export_dir_label.grid(row=row_index, column=0, pady=(20, 0), padx=(20, 20), sticky="e")
+
+        self.file_name_entry = customtkinter.CTkEntry(self, placeholder_text="默认：订单文件名-配货表-时间戳")
+        self.file_name_entry.grid(row=row_index, column=1, columnspan=4, pady=(20, 0), sticky="nsew")
 
         # 执行按钮
-        self.execute_btn = customtkinter.CTkButton(self, text="执行", command=self.execute_button_callback)
-        self.execute_btn.grid(row=3,  column=1, pady=20, sticky="w")
+        row_index += 1
+        self.execute_btn = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,
+                                                   text_color=("gray10", "#DCE4EE"),
+                                                   text="执行",
+                                                   command=self.execute_button_callback)
+        self.execute_btn.grid(row=row_index, column=1, pady=20, sticky="w")
 
         # 执行日志
-        self.textbox_label = customtkinter.CTkLabel(self, text="处理日志", font=customtkinter.CTkFont(size=16, weight="bold"))
-        self.textbox_label.grid(row=4, column=0, padx=20, pady=5, sticky="w")
+        row_index += 1
+        self.textbox_label = customtkinter.CTkLabel(self, text="处理日志",
+                                                    font=customtkinter.CTkFont(size=16, weight="bold"))
+        self.textbox_label.grid(row=row_index, column=0, padx=20, pady=5, sticky="w")
+
+        # 日志文本框
+        row_index += 1
         self.textbox = customtkinter.CTkTextbox(self)
-        self.textbox.grid(row=5, columnspan=2, padx=20, pady=(0,20), sticky="nsew")
+        self.textbox.grid(row=row_index, columnspan=6, padx=20, pady=(0, 20), sticky="nsew")
 
     # 选择文件按钮回调
     def file_button_callback(self):
@@ -65,14 +93,18 @@ class App(customtkinter.CTk):
             file_name = os.path.basename(file_path)
             self.choose_file = file_path
             directory_path = os.path.dirname(file_path)
-            self.export_path_label.configure(text=directory_path)
+            # self.export_path_label.configure(text=directory_path)
+            self.export_path_label.delete(0, "end")
+            self.export_path_label.insert(0, directory_path)
             self.export_dir = directory_path
             # 获取时间戳
             if file_name:
                 self.file_btn.configure(text="重新选择")
                 self.file_name_entry.delete(0, "end")
                 self.file_name_entry.insert(0, file_name.split(".")[0]+"-配货表-" + time.strftime("%m%d%H%M", time.localtime()))
-            self.file_path_label.configure(text=file_name)
+            # self.file_path_label.configure(text=file_name)
+            self.file_path_label.delete(0, "end")
+            self.file_path_label.insert(0, file_name)
 
     # 执行按钮回调
     def execute_button_callback(self):
@@ -102,7 +134,8 @@ class App(customtkinter.CTk):
         directory_path = filedialog.askdirectory()
         # 检查是否选择了文件
         if directory_path:
-            self.export_path_label.configure(text=directory_path)
+            self.export_path_label.delete(0, "end")
+            self.export_path_label.insert(0, directory_path)
             self.export_dir = directory_path
 
     def print_logs(self, msg, end):
