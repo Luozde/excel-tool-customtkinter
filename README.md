@@ -40,7 +40,7 @@ pyinstaller --noconfirm --onedir --windowed --add-data "<CustomTkinter Location>
 
 完整示例：
 ```bash
-pyinstaller --noconfirm --onedir --windowed --add-data "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter;customtkinter\" "E:\code\python\ExcelTools.py"
+pyinstaller --noconfirm --onedir --windowed --add-data "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter;customtkinter\" "E:\code\excel-tool-customtkinter\ExcelTools.py"
 ```
 
 ## 4. 打包后的exe文件在dist目录下
