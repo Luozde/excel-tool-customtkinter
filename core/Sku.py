@@ -53,7 +53,7 @@ class Sku:
                 color = parts[1]
                 size = parts[2]
                 return Sku(color, size, productNo)
-            elif num_parts == 4 and ("Men's" in parts[2] or "Women's" in parts[2]):
+            elif num_parts == 4 and ("men's" in parts[2].lower() or "women's" in parts[2].lower()):
                 size = parts[2].split(" ")[1]
                 sex = parts[2].split(" ")[0]
                 productNo = f'{parts[0]}'
