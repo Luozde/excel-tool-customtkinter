@@ -1,6 +1,6 @@
 
 class Sku:
-    def __init__(self, color, size, productNo, quantity=0, image=None, imageFile=None, text=None, sex=None):
+    def __init__(self, color, size, productNo, quantity=0, image=None, imageFile=None, text=None, sex=None, index=None):
         self.color = color
         self.size = size.upper()
         self.productNo = productNo
@@ -9,6 +9,20 @@ class Sku:
         self.imageFile = None
         self.text = text
         self.sex = sex
+        self.index = index
+
+        if self.sex is None:
+            self.key1 = productNo
+        else:
+            self.key1 = f'{productNo}-{sex}'
+            self.key1 = self.key1.replace("'s", "")
+
+        if self.text is None:
+            self.key2 = productNo
+        else:
+            self.key2 = f'{productNo}-{text}'
+            self.key2 = self.key2.replace("'s", "")
+
         if self.size == 'XXL':
             self.size = '2XL'
         elif self.size == 'XXXL':
@@ -40,11 +54,13 @@ class Sku:
                 size = parts[2]
                 return Sku(color, size, productNo)
             elif num_parts == 4 and ("Men's" in parts[2] or "Women's" in parts[2]):
-                productNo = parts[0]
                 size = parts[2].split(" ")[1]
                 sex = parts[2].split(" ")[0]
-                color = f'{parts[1]}({sex})'
-                return Sku(color=color.replace("'s", ""), size=size, productNo=productNo, text=parts[3], sex=sex)
+                productNo = f'{parts[0]}'
+                # color = f'{parts[1]}({sex})-({parts[3]})'
+                index = f'{parts[1]}({sex})-({parts[3]})'
+                color = f'{parts[1]}'
+                return Sku(color=color, size=size, productNo=productNo, text=parts[3], sex=sex, index=index)
             else:
                 raise ValueError("sku格式不规范")
 
