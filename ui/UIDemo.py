@@ -21,7 +21,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("订单配货表生成工具-V2023.11.03")
+        self.title("订单配货表生成工具-v2023.11.12")
         self.geometry(f"{600}x{500}")
         self.grid_columnconfigure((1, 4), weight=1)
         self.grid_rowconfigure((5, 6), weight=1)
